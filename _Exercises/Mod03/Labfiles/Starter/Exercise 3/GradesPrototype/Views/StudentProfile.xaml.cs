@@ -54,16 +54,6 @@ namespace GradesPrototype.Views
         public void Refresh()
         {
             // TODO: Exercise 3: Task 4a: Display the details for the current student (held in SessionContext.CurrentStudent) 
-            firstName.Text = SessionContext.CurrentStudent.FirstName;
-            lastName.Text = SessionContext.CurrentStudent.LastName;
-
-            if (SessionContext.UserRole == Role.Teacher)
-                btnBack.Visibility = Visibility.Visible;
-
-            var getAllGradesQuery = from Grade g in DataSource.Grades
-                                    where g.StudentID == SessionContext.CurrentStudent.StudentID
-                                    select g;
-            studentGrades.ItemsSource = getAllGradesQuery.ToList();
 
             // TODO: Exercise 3: Task 4d: Create a list of the grades for the student and display this list on the page
         }

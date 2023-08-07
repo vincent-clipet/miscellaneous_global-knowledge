@@ -29,54 +29,17 @@ namespace GradesPrototype.Views
 
         #region Event Members
         public event EventHandler LogonSuccess;
-        public event EventHandler LogonFailed;
 
-        // Exercise 3: Task 1a: Define LogonFailed event
+        // TODO: Exercise 3: Task 1a: Define LogonFailed event
 
         #endregion
 
         #region Logon Validation
 
-        // Exercise 3: Task 1b: Validate the username and password against the Users collection in the MainWindow window
+        // TODO: Exercise 3: Task 1b: Validate the username and password against the Users collection in the MainWindow window
         private void Logon_Click(object sender, RoutedEventArgs e)
         {
-            var teacherQuery = from Teacher t in DataSource.Teachers
-                          where t.UserName == username.Text
-                          && t.Password == password.Password
-                          select t;
-
-            if (teacherQuery.Count() > 0) // Teacher
-            {
-                Teacher t = teacherQuery.First();
-                SessionContext.UserID = t.TeacherID;
-                SessionContext.UserRole = Role.Teacher;
-                SessionContext.UserName = t.UserName;
-                SessionContext.CurrentTeacher = t;
-
-                LogonSuccess?.Invoke(this, null);
-            }
-            else // Student or Invalid Login
-            {
-                var studentQuery = from Student s in DataSource.Students
-                                   where s.UserName == username.Text
-                                   && s.Password == password.Password
-                                   select s;
-
-                if (studentQuery.Count() > 0) // Student
-                {
-                    Student s = studentQuery.First();
-                    SessionContext.UserID = s.TeacherID;
-                    SessionContext.UserRole = Role.Student;
-                    SessionContext.UserName = s.UserName;
-                    SessionContext.CurrentStudent = s;
-
-                    LogonSuccess?.Invoke(this, null);
-                }
-                else // Invalid Login
-                {
-                    LogonFailed?.Invoke(this, null);
-                }
-            }
+            
         }
         #endregion
     }
