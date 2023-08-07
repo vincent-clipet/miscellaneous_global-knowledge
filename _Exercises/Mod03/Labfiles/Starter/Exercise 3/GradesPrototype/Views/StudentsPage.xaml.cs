@@ -33,7 +33,14 @@ namespace GradesPrototype.Views
         // TODO: Exercise 3: Task 3a: Display students for the current teacher (held in SessionContext.CurrentTeacher )
         public void Refresh()
         {
+            Teacher t = SessionContext.CurrentTeacher;
 
+            var getAllStudentsQuery = from Student s in DataSource.Students
+                               where s.TeacherID == t.TeacherID
+                               select s;
+
+            list.ItemsSource = getAllStudentsQuery.ToList();
+            txtClass.Text = SessionContext.CurrentTeacher.Class;
         }
         #endregion
 
@@ -44,10 +51,13 @@ namespace GradesPrototype.Views
 
         #region Event Handlers
 
-        // TODO: Exercise 3: Task 3b: If the user clicks on a student, display the details for that student
+        // Exercise 3: Task 3b: If the user clicks on a student, display the details for that student
         private void Student_Click(object sender, RoutedEventArgs e)
         {
-
+            Button b = (Button)sender;
+            // studentId = b.Tag;
+            Student s = (Student)b.DataContext;
+            StudentSelected?.Invoke(this, new StudentEventArgs(s));
         }
         #endregion
     }

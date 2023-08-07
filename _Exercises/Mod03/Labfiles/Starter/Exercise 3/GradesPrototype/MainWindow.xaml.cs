@@ -75,9 +75,12 @@ namespace GradesPrototype
             Refresh();
         }
 
-        // TODO: Exercise 3: Task 2a: Handle logon failure
+        // Exercise 3: Task 2a: Handle logon failure
         // Display an error message. The user must try again
-
+        private void Logon_Failed(object sender, EventArgs e)
+        {
+            MessageBox.Show("Username/Password does not match any known user", "Logon Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
 
         // Handle logoff
         private void Logoff_Click(object sender, RoutedEventArgs e)
@@ -98,8 +101,9 @@ namespace GradesPrototype
         // Handle the StudentSelected event when the user clicks a student on the Students view
         private void studentsPage_StudentSelected(object sender, StudentEventArgs e)
         {
-            // TODO: Exercise 3: Task 3c: Set the current student in the global context to the student specified in the StudentEventArgs parameter
-            
+            // Exercise 3: Task 3c: Set the current student in the global context to the student specified in the StudentEventArgs parameter
+            SessionContext.CurrentStudent = e.Child;
+
             // Display the details of the current student
             GotoStudentProfile();
         }
@@ -114,15 +118,19 @@ namespace GradesPrototype
             switch (SessionContext.UserRole)
             {
                 case Role.Student:
-                    // TODO: Exercise 3: Task 2c: Display the student name in the banner at the top of the page
-                    
+
+                    Student s = SessionContext.CurrentStudent;
+                    txtName.Text = s.FirstName + " " + s.LastName;
+
                     // Display the details for the current student
                     GotoStudentProfile();
                     break;
 
                 case Role.Teacher:
-                    // TODO: Exercise 3: Task 2d: Display the teacher name in the banner at the top of the page
-                    
+
+                    Teacher t = SessionContext.CurrentTeacher;
+                    txtName.Text = t.FirstName + " " + t.LastName;
+
                     // Display the list of students for the teacher
                     GotoStudentsPage();                    
                     break;
