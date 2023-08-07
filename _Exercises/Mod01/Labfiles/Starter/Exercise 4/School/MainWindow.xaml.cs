@@ -163,7 +163,14 @@ namespace School
             // TODO: Exercise 4: Task 2d: Convert this result into a number of years
             // TODO: Exercise 4: Task 2e: Convert the number of years into a string and return it
 
-            return "";
+            if (value == null) return "";
+
+            DateTime d = (DateTime)value;
+            TimeSpan age = DateTime.Now.Subtract(d);
+            // Console.WriteLine(age.Days.ToString());
+            // double years = Math.Floor(age.Days / 365.25);
+            int years = (int)(age.Days / 365.25);
+            return years.ToString();
         }
 
         #region Predefined code

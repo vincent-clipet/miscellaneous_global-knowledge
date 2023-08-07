@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.ComponentModel;
-using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using School.Data;
-
+using System.Globalization;
 
 namespace School
 {
@@ -58,40 +57,49 @@ namespace School
         // When the user presses a key, determine whether to add a new student to a class, remove a student from a class, or modify the details of a student
         private void studentsList_KeyDown(object sender, KeyEventArgs e)
         {
+            // TODO: Exercise 1: Task 1a: If the user pressed Enter, edit the details for the currently selected student
+            // TODO: Exercise 1: Task 2a: Use the StudentsForm to display and edit the details of the student
+            // TODO: Exercise 1: Task 2b: Set the title of the form and populate the fields on the form with the details of the student
+            // TODO: Exercise 1: Task 3a: Display the form
+            // TODO: Exercise 1: Task 3b: When the user closes the form, copy the details back to the student
+            // TODO: Exercise 1: Task 3c: Enable saving (changes are not made permanent until they are written back to the database)
             switch (e.Key)
             {
-                // If the user pressed Enter, edit the details for the currently selected student
-                case Key.Enter: Student student = this.studentsList.SelectedItem as Student;
+                case Key.Enter:
+                    Student student = (Student)this.studentsList.SelectedItem;
+                    StudentForm form = new StudentForm();
+                    form.Title = "Edit Student Details";
+                    form.firstName.Text = student.FirstName;
+                    form.lastName.Text = student.LastName;
+                    form.dateOfBirth.Text = student.DateOfBirth.ToString("d");
 
-                    // Use the StudentsForm to display and edit the details of the student
-                    StudentForm sf = new StudentForm();
-
-                    // Set the title of the form and populate the fields on the form with the details of the student           
-                    sf.Title = "Edit Student Details";
-                    sf.firstName.Text = student.FirstName;
-                    sf.lastName.Text = student.LastName;
-                    sf.dateOfBirth.Text = student.DateOfBirth.ToString("d"); // Format the date to omit the time element
-
-                    // Display the form
-                    if (sf.ShowDialog().Value)
+                    // var tmp = form.ShowDialog();
+                    if (form.ShowDialog().Value)
                     {
-                        // When the user closes the form, copy the details back to the student
-                        student.FirstName = sf.firstName.Text;
-                        student.LastName = sf.lastName.Text;
-                        student.DateOfBirth = DateTime.ParseExact(sf.dateOfBirth.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
-                        // Enable saving (changes are not made permanent until they are written back to the database)
+                        student.FirstName = form.firstName.Text;
+                        student.LastName = form.lastName.Text;
+                        student.DateOfBirth = DateTime.Parse(form.dateOfBirth.Text);
+                        // Console.WriteLine(student.DateOfBirth);
                         saveChanges.IsEnabled = true;
                     }
                     break;
 
-                    // TODO: Exercise 2: Task 1a: If the user pressed Insert, add a new student
-                    // TODO: Exercise 2: Task 2a: Use the StudentsForm to get the details of the student from the user
-                    // TODO: Exercise 2: Task 2b: Set the title of the form to indicate which class the student will be added to (the class for the currently selected teacher)
-                    // TODO: Exercise 2: Task 3a: Display the form and get the details of the new student
-                    // TODO: Exercise 2: Task 3b: When the user closes the form, retrieve the details of the student from the form and use them to create a new Student object
-                    // TODO: Exercise 2: Task 4a: Assign the new student to the current teacher
-                    // TODO: Exercise 2: Task 4b: Add the student to the list displayed on the form
-                    // TODO: Exercise 2: Task 4c: Enable saving (changes are not made permanent until they are written back to the database)
+                case Key.F1:
+                    StudentForm formNewUser = new StudentForm();
+                    formNewUser.Title = "New Student for Class " + teacher.Class;
+                    if (formNewUser.ShowDialog().Value)
+                    {
+                        Student newStudent = new Student();
+                        newStudent.FirstName = formNewUser.firstName.Text;
+                        newStudent.LastName = formNewUser.lastName.Text;
+                        newStudent.DateOfBirth = DateTime.Parse(formNewUser.dateOfBirth.Text);
+                        // string[] values = { newStudent.FirstName, newStudent.LastName, formNewUser.dateOfBirth.Text };
+                        // ListViewItem listViewItem = new ListViewItem(values);
+                        this.teacher.Students.Add(newStudent);
+                        this.studentsInfo.Add(newStudent);
+                        saveChanges.IsEnabled = true;
+                    }
+                    break;
             }
         }
 
