@@ -99,20 +99,33 @@ namespace GradesPrototype.Views
             try
             {
                 // TODO: Exercise 2: Task 3a: Use the GradeDialog to get the details of the new grade.
-                
+
+                GradeDialog gd = new GradeDialog();
 
                 // TODO: Exercise 2: Task 3b: Display the form and get the details of the new grade.
-                
+
+                if (gd.ShowDialog().Value == true)
+                {
                     // TODO: Exercise 2: Task 3c: When the user closes the form, retrieve the details of the assessment grade from the form
                     // and use them to create a new Grade object.
-                   
+
+                    Grade grade = new Grade();
+                    grade.StudentUserId = SessionContext.CurrentStudent.UserId;
+                    grade.SubjectId = gd.subject.SelectedIndex;
+                    grade.Assessment = gd.assessmentGrade.Text;
+                    grade.AssessmentDate = gd.assessmentDate.SelectedDate.Value;
+                    grade.Comments = gd.comments.Text;
 
                     // TODO: Exercise 2: Task 3d: Save the grade.
-                   
+
+                    SessionContext.DBContext.Grades.Add(grade);
+                    SessionContext.DBContext.SaveChanges();
+                    Refresh();
 
                     // TODO: Exercise 2: Task 3e: Refresh the display so that the new grade appears
-                    
-                
+                }
+
+
             }
             catch (Exception ex)
             {
@@ -277,11 +290,22 @@ namespace GradesPrototype.Views
                 btnAddGrade.Visibility = Visibility.Visible;
             }
 
+
+
             // TODO: Exercise 2: Task 1a: Find all the grades for the student.
             
+            Student s = SessionContext.CurrentStudent;
+            var allGrades = SessionContext.DBContext.Grades;
+
+            var grades = from Grade g in allGrades
+                         where g.StudentUserId == s.UserId
+                         select g;
+
+
 
             // TODO: Exercise 2: Task 1b: Display the grades in the studentGrades ItemsControl by using databinding
-            
+
+            studentGrades.ItemsSource = grades.ToList();
         }
     }
 
@@ -294,10 +318,18 @@ namespace GradesPrototype.Views
         {
             // TODO: Exercise 2: Task 2a: Convert the subject ID provided in the value parameter.
 
+            var subjectName = from s in SessionContext.DBContext.Subjects
+                              where s.Id == (int)value
+                              select s.Name;
+            
             // TODO: Exercise 2: Task 2b: Return the subject name or the string "N/A".
 
+            if (subjectName.Count() != 1)
+                return "N/A";
+            else
+                return subjectName.First();
 
-            return value;
+            //return value;
         }
 
         #region Predefined code

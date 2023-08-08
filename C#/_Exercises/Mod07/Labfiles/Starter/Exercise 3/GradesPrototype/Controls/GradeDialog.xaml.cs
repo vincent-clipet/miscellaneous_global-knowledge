@@ -46,13 +46,11 @@ namespace GradesPrototype.Controls
             try
             {
                 // TODO: Exercise 3: Task 2a: Create a Grade object.
-
-
                 // TODO: Exercise 3: Task 2b: Call the ValidateAssessmentDate method.
-
-
                 // TODO: Exercise 3: Task 2c: Call the ValidateAssessmentGrade method.
-
+                Grade g = new Grade();
+                g.ValidateAssessmentDate(assessmentDate.DisplayDate);
+                g.ValidateAssessmentGrade(assessmentGrade.Text);
             }
             catch (Exception ex)
             {
