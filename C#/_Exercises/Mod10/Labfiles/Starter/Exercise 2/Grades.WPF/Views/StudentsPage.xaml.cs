@@ -25,22 +25,26 @@ namespace Grades.WPF
         public delegate void StudentSelectionHandler(object sender, StudentEventArgs e);
         public event StudentSelectionHandler StudentSelected;
 
-        // TODO: Exercise 2: Task 3a: Add the StartBusy public event
+        // Exercise 2: Task 3a: Add the StartBusy public event
+        // Exercise 2: Task 3b: Add the EndBusy public event
 
-        // TODO: Exercise 2: Task 3b: Add the EndBusy public event
+        public event EventHandler StartBusy;
+        public event EventHandler EndBusy;
 
         #endregion
 
         #region Refresh
         public async void Refresh()
         {
-            // TODO: Exercise 2: Task 3f: Raise the StartBusy event
-            
+            // Exercise 2: Task 3f: Raise the StartBusy event
+            StartBusyEvent();
+
             ServiceUtils utils = new ServiceUtils();
 
             await utils.GetStudentsByTeacher(SessionContext.UserName, OnGetStudentsByTeacherComplete);
 
-            // TODO: Exercise 2: Task 3g: Raise the EndBusy event
+            // Exercise 2: Task 3g: Raise the EndBusy event
+            EndBusyEvent();
 
         }
         #endregion
@@ -65,14 +69,23 @@ namespace Grades.WPF
 
             this.Dispatcher.Invoke(() => { list.ItemsSource = resultData;
                                            txtClass.Text = String.Format("Class {0}", SessionContext.CurrentTeacher.Class); });
-        }        
+        }
         #endregion
 
         #region Events
 
-        // TODO: Exercise 2: Task 3c: Implement the StartBusyEvent method to raise the StartBusy event
+        // Exercise 2: Task 3c: Implement the StartBusyEvent method to raise the StartBusy event
+        // Exercise 2: Task 3d: Implement the EndBusyEvent method to raise the EndBusy event
 
-        // TODO: Exercise 2: Task 3d: Implement the EndBusyEvent method to raise the EndBusy event
+        public void StartBusyEvent()
+        {
+            StartBusy.Invoke(this, new EventArgs());
+        }
+
+        public void EndBusyEvent()
+        {
+            EndBusy.Invoke(this, new EventArgs());
+        }
 
         private void Student_MouseEnter(object sender, MouseEventArgs e)
         {
