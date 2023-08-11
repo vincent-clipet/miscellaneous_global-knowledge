@@ -49,6 +49,7 @@ namespace Grades.WPF
 
         #region Readonly Properties
 
+        [IncludeInReport(Label = "Subject Name", Bold = true, Underline = true)]
         public string SubjectName
         {
             get { return (Record.Subject != null) ? Record.Subject.Name : ""; }
@@ -58,9 +59,11 @@ namespace Grades.WPF
         {
             get { return Record.AssessmentDate.ToShortDateString(); }
         }
-        #endregion
 
+        #endregion
         #region Form Properties
+
+        [IncludeInReport(Label = "Date")]
         public DateTime AssessmentDate
         {
             get { return Record.AssessmentDate; }
@@ -87,12 +90,14 @@ namespace Grades.WPF
             }
         }
 
+        [IncludeInReport(Label = "Grade")]
         public string Assessment
         {
             get { return Record.Assessment; }
             set { Record.Assessment = value; }
         }
 
+        [IncludeInReport(Label = "Comments")]
         public string Comments
         {
             get { return Record.Comments; }
